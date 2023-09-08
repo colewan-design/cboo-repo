@@ -51,7 +51,9 @@ const routes = [
                 path: '/',
                 component: Dashboard,
                 meta: {
-                    title: `Dashboard`
+                    title: `Dashboard`,
+                    role: 'admin'
+                    // roles: ['admin', 'manager', 'employee']
                 }
             },
             {
@@ -59,7 +61,8 @@ const routes = [
                 path: '/profile',
                 component: Profile,
                 meta: {
-                    title: `Profile`
+                    title: `Profile`,
+                    role: 'employee'
                 }
             },
             {
@@ -67,7 +70,8 @@ const routes = [
                 path: '/employee',
                 component: Employee,
                 meta: {
-                    title: `Employee`
+                    title: `Employee`,
+                    role: 'admin'
                 }
             },
             {
@@ -75,7 +79,8 @@ const routes = [
                 path: '/salarygrade',
                 component: SalaryGrade,
                 meta: {
-                    title: `SalaryGrade`
+                    title: `SalaryGrade`,
+                    role: 'admin'
                 }
             },
             {
@@ -83,7 +88,8 @@ const routes = [
                 path: '/report',
                 component: Report,
                 meta: {
-                    title: `Report`
+                    title: `Report`,
+                    role: 'admin'
                 }
             }
         ]
@@ -92,9 +98,10 @@ const routes = [
 
 const router = createRouter({
     history: createWebHistory(),
-    routes, // short for `routes: routes`
+    routes,
 })
 
+// Implement a route guard to check roles and permissions
 router.beforeEach((to, from, next) => {
     document.title = to.meta.title
     if (to.meta.middleware == "guest") {
@@ -104,7 +111,16 @@ router.beforeEach((to, from, next) => {
         next()
     } else {
         if (store.state.auth.authenticated) {
-            next()
+            // Check if the user has the required role to access the route
+            const userRole = store.state.auth.user.role;
+            const requiredRole = to.meta.role;
+
+            if (requiredRole && userRole !== requiredRole) {
+                // User doesn't have the required role, redirect to a different route or show an error message
+                next({ name: "dashboard" }); // You can customize this behavior
+            } else {
+                next();
+            }
         } else {
             next({ name: "login" })
         }
