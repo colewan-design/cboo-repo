@@ -9,7 +9,47 @@
                 <div class="collapse navbar-collapse" id="navbarNavDropdown">
                     <ul class="navbar-nav me-auto">
                         <li class="nav-item">
-                            <router-link :to="{name:'dashboard'}" class="nav-link">Home</router-link>
+                            <v-menu>
+                                <template v-slot:activator="{ props }">
+                                    <v-btn
+                                    variant="text"
+                                    v-bind="props"
+                                    >
+                                    <v-icon>
+                                        mdi-view-dashboard
+                                    </v-icon>
+                                    Dashboard
+                                    </v-btn>
+                                </template>
+                                <v-list>
+                                    <v-list-item>
+                                        <router-link :to="{ name: 'dashboard' }" class="nav-link">
+                                            <v-icon color="blue">
+                                                mdi-view-dashboard
+                                            </v-icon>
+                                            Dashboard
+                                        </router-link>
+                                    </v-list-item>
+                                    <v-list-item>
+                                      
+                                        <router-link :to="{ name: 'employee' }" class="nav-link">
+                                            <v-icon color="green">
+                                                mdi-account-multiple
+                                            </v-icon>
+                                            Employees
+                                        </router-link>
+                                    </v-list-item>
+                                    <v-list-item>
+                                        <router-link :to="{name:'report'}" class="nav-link">
+                                            <v-icon color="purple">
+                                                mdi-file-document
+                                            </v-icon>
+                                            Reports
+                                        </router-link>
+                                    </v-list-item>
+                                </v-list>
+                            </v-menu>
+                         
                         </li>
                         <li class="nav-item">
                             <router-link :to="{name:'employee'}" class="nav-link">Employees</router-link>
@@ -52,8 +92,16 @@ export default {
     name:"default-layout",
     data(){
         return {
-            user:this.$store.state.auth.user
+            user:this.$store.state.auth.user,
+            items: [
+                { title: 'Click Me' },
+                { title: 'Click Me' },
+                { title: 'Click Me' },
+                { title: 'Click Me 2' },
+            ],
         }
+        
+        
     },
     computed: {
         // Compute the current route text based on the route name

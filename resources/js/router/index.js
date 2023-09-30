@@ -62,7 +62,7 @@ const routes = [
                 component: Profile,
                 meta: {
                     title: `Profile`,
-                    role: 'employee'
+                    role: 'admin'
                 }
             },
             {
